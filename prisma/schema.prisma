@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(255)
+  barcode   String
+  category  String?
+  brand     String?
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  Income    Income[]
+  Outcome   Outcome[]
+}
+
+model Income {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  productId  Int
+  expiresAt  DateTime
+  batch      String?
+  location   String?
+  priceCents Int
+  createdAt  DateTime  @default(now()) @db.Timestamp(6)
+  user       User      @relation(fields: [userId], references: [id])
+  product    Product   @relation(fields: [productId], references: [id])
+  Outcome    Outcome[]
+}
+
+model Outcome {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  incomeId  Int
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  income    Income   @relation(fields: [incomeId], references: [id])
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  income    Income[]
+  outcome   Outcome[]
+
+  @@map(name: "users")
+}
