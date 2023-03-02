@@ -47,18 +47,19 @@ model Outcome {
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            Int
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+  id                       String  @id @default(cuid())
+  userId                   Int
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  refresh_token_expires_in Int?
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -82,14 +83,16 @@ model VerificationToken {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?   @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  createdAt DateTime  @default(now()) @db.Timestamp(6)
-  income    Income[]
-  outcome   Outcome[]
-  accounts  Account[]
-  sessions  Session[]
+  id            Int       @id @default(autoincrement())
+  name          String?   @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  image         String?
+  emailVerified String?
+  income        Income[]
+  outcome       Outcome[]
+  accounts      Account[]
+  sessions      Session[]
 
   @@map(name: "users")
 }

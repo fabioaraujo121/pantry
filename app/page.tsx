@@ -3,6 +3,7 @@ import { Inter } from '@next/font/google'
 import styles from './page.module.css'
 import prisma from '../lib/prisma';
 import Link from 'next/link'
+import LoginBtn from "../components/login-btn";
 
 const inter    = Inter({ subsets: ['latin'] })
 const products = await prisma.product.findMany();
@@ -62,6 +63,7 @@ export default function Home() {
             Qual o objetivo e como funciona?
           </p>
         </Link>
+        <LoginBtn />
 
         <Link
           href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
@@ -70,7 +72,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={inter.className}>
-            Entrar <span>-&gt;</span>
+            <LoginBtn />
           </h2>
           <p className={inter.className}>
             Economize mais de 15% do gasto com alimentação. (TODO: Melhorar CTA)
